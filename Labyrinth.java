@@ -9,7 +9,7 @@ import java.util.ArrayList;
 * Run: java Labyrinth [rows] [columns]
 *
 *
-* (c) 2021 Joel Hammer
+* (c) 2021 Mason
 * Friends School of Baltimore
 *
 *
