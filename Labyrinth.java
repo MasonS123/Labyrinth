@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 /*
 * Labyrinth.java is part of the Backtracking project in
 * the recursion unit of Advanced CS at Friends School of Baltimore.
@@ -98,8 +99,9 @@ public class Labyrinth {
 	/**
 	*array that keeps track of all correct moves
 	*/
-	private  ArrayList<Integer> solution = new ArrayList<Integer>();
-	
+	public  ArrayList<Integer> solution = new ArrayList<Integer>();
+	 
+	public static int[] realSolution;
 	/**
 	* keeps track of index of array list
 	*/
@@ -143,18 +145,33 @@ public class Labyrinth {
 	* checks if you have made it to the bottom right
 	*/
 	public void findSafeMove(int row, int col, Labyrinth l,int[][] visits){
+		
+		
 		// checks if found the bottom corner
 		if(row == rows-1&&col == cols-1){
-			//prints solution
-			System.out.println("The sulotion is " + solution); 
-			//keeps track if you have reached the end
-			done++;
+		
+		//converts solution into int array
+		int[] intSoluition = new int[solution.size()];
+		int index = 0;
+		for (final Integer value : solution) {
+         intSoluition[index++] = value;
+		}
+		//makes the int array a class variable
+		realSolution = intSoluition;
+		//checks if you solved it right	
+		if(solves(realSolution) == true){
+			System.out.println("solved");
+		}
+		
+		//keeps track if you have reached the end
+		done++;
 			
 		}
 		//checks if the move is a valid move and if the square is on the grid and  made of stone and you haven't been there and you are not at the end
-		else if ((isValid(row, col) == true) && (isStone(row, col) == true) && (visits[row][col] == 0)&& done != 1){
+		else if ((isValid(row, col) == true) && (isStone(row, col) == true) && (visits[row][col] == 0)&& done <= 1){
 		
 			//adds move the move to solution than recours until it reaches the end or backtracks removes the wrong solutions when backtracking
+			
 			solution.add(i, 0);
 			i++;
 			visits[row][col] = 1;
@@ -162,23 +179,28 @@ public class Labyrinth {
 			i--;
 			solution.remove(i);
 			
-		
+			
 			//same thing but for down
+			
 			solution.add(i, 1);
 			i++;
 			visits[row][col] = 1;
 			findSafeMove(row + 1, col, l, visits);
 			i--;
 			solution.remove(i);
-		
+			
+			
 			//same thing but for left
+			
 			solution.add(i, 2);
 			i++;
 			visits[row][col] = 1;
 			findSafeMove(row , col -1,l, visits);
 			i--;
 			solution.remove(i);
-		
+			
+			
+			
 			//same thing but for right
 			solution.add(i, 3);
 			i++;
@@ -186,8 +208,10 @@ public class Labyrinth {
 			findSafeMove(row , col +1,l, visits);
 			i--;
 			solution.remove(i);
+		
 			
 		}
+		
 	}
 	
 	
@@ -320,23 +344,22 @@ public class Labyrinth {
     * @param args command line arguments. First the number of rows, then columns.
     */
     public static void main(String[] args) {
-        if (args.length != 2) {
-            System.out.println("Usage is java Labyrinth [rows] [columns]");
-            return;
-        }
-        
+		
+	
         int a = Integer.parseInt(args[0]);
         int b = Integer.parseInt(args[1]);
 		//2d array to keep track of squares visited 
 		int visits[][] = new int [a][b];
-        
         Labyrinth l = new Labyrinth(a,b);
         l.printGrid();
 		//runs the maze solver
 		l.findSafeMove(0,0,l, visits);
+		//prints solution
+	
+		System.out.print("The solution is ");
+		System.out.print(Arrays.toString(realSolution)); 
 		
     }
-    
     //Private Union-Find class to assist with random maze construction.
     private class UF {
         private int[] id;
